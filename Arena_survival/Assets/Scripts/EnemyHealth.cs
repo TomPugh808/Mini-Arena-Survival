@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    public int maxHealth = 50;
+    public int maxHealth = 30;
     public bool isDead  = false;
     public EnemyHealthBar healthBar;
     private int currentHealth;
@@ -16,9 +16,6 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead)
-            return;
-        
         currentHealth -= damage;
         healthBar.UpdateHealth((float)currentHealth / maxHealth);
 
@@ -26,9 +23,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            isDead = true;
-            Debug.Log("Enemy has died!");
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }
