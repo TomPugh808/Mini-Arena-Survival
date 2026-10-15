@@ -5,10 +5,13 @@ public class Enemy : MonoBehaviour
 {
     public float speed = 2f;
     public float stopDistance = 1f;
+    public int attackDamage = 10;
+    public float attackCooldown = 1f;
 
     private Rigidbody2D rb;
     private Transform player;
     private SpriteRenderer spriteRenderer;
+    private float nextAttackTime;
 
     void Awake()
     {
@@ -23,6 +26,28 @@ public class Enemy : MonoBehaviour
         if (playerObject != null)
         {
             player = playerObject.transform;
+        }
+    }
+
+    void Update()
+    {
+        if (player == null)
+            return;
+
+        float distance = Vector2.Distance(transform.position, player.position);
+
+        if (distance <= stopDistance + 0.2f && Time.time >= nextAttackTime)
+        {
+            PlayerHealth health = player.GetComponent<PlayerHealth>();
+
+            if (health == null || health.isDead)
+                return;
+
+            if (health != null)
+            {
+                health.TakeDamage(attackDamage);
+                nextAttackTime = Time.time + attackCooldown;
+            }
         }
     }
 
