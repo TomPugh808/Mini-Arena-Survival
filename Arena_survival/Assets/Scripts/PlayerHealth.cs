@@ -5,12 +5,13 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public bool isDead  = false;
-
+    public PlayerHealthBar healthBar;
     private int currentHealth;
 
     void Start()
     {
         currentHealth = maxHealth;
+        healthBar.UpdateHealth(1f);
     }
 
     public void TakeDamage(int damage)
@@ -19,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         
         currentHealth -= damage;
+        healthBar.UpdateHealth((float)currentHealth / maxHealth);
 
         Debug.Log("Player Health: " + currentHealth);
 
